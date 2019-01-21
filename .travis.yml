@@ -1,2 +1,9 @@
 language: node_js
 node_js: node
+deploy:
+  provider: heroku
+  api_key:
+    secure: eM94WKc9OBwtQG+MfSNRSF3TWgDrH0IA1LZE0zuV8CAtjglpwNmNvmh/HOFasTIMGLgDE0kdXP8lCvFGeOUdGaisqzyoiM2oEjg34TT/JY+HIOjta2p8sNPBDdf4jEsvm1Hb5a7ZF6EQg6QydpM505mlvKw1TTj9dD+G7594iVqq74HfEr7jOHY8p01iOkFukRzBb9+OdJ3RCNglBYBctn+AB8GOZPrMPC+h2P5C+auJyGXNWbyDTBy6CJYHsR+egiKM4A/61PwlMC+3NeDvQo4D8cvYxb7SLEqOqLKeL+XlZr74A4V66S9O1iwU5I0ZVpmRzCpi4h8IQtjig+5Obn7NWPqBjpKgPO9Tx3A90yJ5k6e97b9IR1oDrKbCyr9FRHcgsa6xEgeD+0K6C5+A+x7RXCukfxm9BSsNmzNE09kPyuIMemD8TWshVMkBVQOafQWijy+q0CYcpYuzMVddAhGwRl4NYRBPvKX5R7kCSSwGkQ/NOXQ00eTK1c+UzzqiP/1vqpo9YdRU3rQmMu+i/SDswzz2UjSVlz+IefnxDj7nuEG1hGx2GV2q59sYHiFFOkE2OalXM0tsaE3C5GqGJeessc2zw/MO+X8m7AnckpDbWsuf7VkdHWf63uzMCxjMnt7dLYOw+I/zRPZJOh2TATeiRbtCgwiri2oJY9QiDkY=
+  app: calm-ravine-88153
+  on:
+    repo: anthonyphoto/blog-api
