@@ -8,7 +8,8 @@ const blogSchema = mongoose.Schema({
     firstName: String,
     lastName: String
   },
-  content: String
+  content: String,
+  created: { type: Date, Default: Date.now }
 });
 
 blogSchema.virtual("authorName").get(function() {
@@ -19,9 +20,11 @@ blogSchema.methods.serialize = function() {
   return {
     title: this.title,
     authorName: this.authorName,
-    content: this.content
+    content: this.content,
+    created: this.created
   }
 }
+
 
 const Blog = mongoose.model("Blog", blogSchema);  // collections = blogs
 module.exports = { Blog };
