@@ -1,14 +1,33 @@
+"use strict";
+
+const mongoose = require("mongoose");
+
+const blogSchema = mongoose.Schema({
+  title: { type: String, required: true},
+  author: {
+    firstName: String,
+    lastName: String
+  },
+  content: String
+});
+
+blogSchema.virtual("authorName").get(function() {
+  return `${this.author.firstName} ${this.author.lastName}`.trim();
+});
+
+blogSchema.methods.serialize = function() {
+  return {
+    title: this.title,
+    authorName: this.authorName,
+    content: this.content
+  }
+}
+
+const Blog = mongoose.model("Blog", blogSchema);  // collections = blogs
+module.exports = { Blog };
+
+/*
 const uuid = require('uuid');
-
-// This module provides volatile storage, using a `BlogPost`
-// model. We haven't learned about databases yet, so for now
-// we're using in-memory storage. This means each time the app stops, our storage
-// gets erased.
-
-// Don't worry too much about how BlogPost is implemented.
-// Our concern in this example is with how the API layer
-// is implemented, and getting it to use an existing model.
-
 
 function StorageException(message) {
    this.message = message;
@@ -68,3 +87,4 @@ function createBlogPostsModel() {
 
 
 module.exports = {BlogPosts: createBlogPostsModel()};
+*/
