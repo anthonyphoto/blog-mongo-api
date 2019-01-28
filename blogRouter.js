@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 //const bodyParser = require("body-parser");
 //const jsonParser = bodyParser.json();
-const { Blog } = require("./models");
+const { Blog, Author } = require("./models");
 
 //test
 
@@ -43,26 +43,49 @@ router.post("/", (req, res)=>{
             return res.status(400).send(message);
         }
     });
-
-    Blog.create({
-        title: req.body.title,
-        author: req.body.author,
-        content: req.body.content
+    Author.findById(req.body.author)
+    .then(author => {
+        if (author) {
+            Blog.create({
+                title: req.body.title,
+                author: req.body.author,
+                content: req.body.content,
+                created: new Date()
+        
+            })
+            .then(blog => res.status(201).json({ 
+                title: blog.title,
+                author: `${author.firstName} ${author.lastName}`.trim(),
+                content: blog.content,
+                comments: blog.comments
+            }))
+            .catch(err => {
+                console.error(err);
+                res.status(500).json({ message: "Internal Server Error"});
+            });        
+        } else {
+            console.err("No Author found");
+            return res.status(400).json({ 
+                message: "No Author Found"
+            });
+        }
     })
-    .then(blog => res.status(201).json(blog.serialize()))
-    .catch(err => {
+    .catch(err =>{
         console.error(err);
-        res.status(500).json({ message: "Internal Server Error"});
+        res.status(500).json({ message: "Internal Server Error" });
+
     });
+
 });
+//        message: `No Author found - ${req.body.author}`
 
 router.put("/:id", (req, res)=>{
     if (!req.params.id || ! req.body.id || req.params.id !== req.body.id) {
         console.error("ID Mismatch");
-        return res.status(400).send({ message: "ID mismatch!" });
+        return res.status(400).json({ message: "ID mismatch!" });
     }
 
-    const updatable = ["title", "author", "content"];
+    const updatable = ["title", "content"];
     const toUpdate = {};
 
     updatable.forEach(key => {
@@ -71,8 +94,13 @@ router.put("/:id", (req, res)=>{
         }
     });
 
-    Blog.findByIdAndUpdate(req.params.id, { $set: toUpdate})
-    .then(blog => res.status(204).end())
+    Blog.findByIdAndUpdate(req.params.id, { $set: toUpdate}, {new: true})
+    .then(blog => res.status(200).send({ 
+        title: blog.title,
+        content: blog.content,
+        author: blog.authorName,
+        created: blog.created
+    }))
     .catch(err => {
         console.error(err);
         res.status(500).json({ message: "Internal Server Error"});

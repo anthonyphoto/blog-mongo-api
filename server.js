@@ -7,6 +7,7 @@ mongoose.Promise = global.Promise;
 const { PORT, DATABASE_URL } = require("./config");
 
 const blogRouter = require("./blogRouter");
+const authorRouter = require("./authorRouter");
 const app = express();
 
 app.use(express.json());  //this is needed if no jsonParser
@@ -19,7 +20,8 @@ app.get("/", (req, res) => {
   });
   
   
-app.use("/blog-posts", blogRouter);
+app.use("/posts", blogRouter);
+app.use("/authors", authorRouter);
 app.use("*", (req, res) =>{
     res.status(404).json({ message: "Not Found" });
 });
